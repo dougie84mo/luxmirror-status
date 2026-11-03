@@ -1,31 +1,115 @@
-# Change these first
-owner: upptime # Your GitHub organization or username, where this repository lives
-repo: upptime # The name of this repository
+# Upptime configuration for status.theluxmirror.com (2026-11-02).
+# Drop this file at the root of the repo created from the upptime/upptime
+# template (dougie84mo/luxmirror-status) and commit. Docs: upptime.js.org/docs
+#
+# Secrets the repo needs (Settings → Secrets → Actions):
+#   GH_PAT                 a token with repo scope (Upptime commits results)
+#   SUPABASE_ANON_KEY      the publishable key, for the REST check below
+#
+# Each check runs every 5 minutes from GitHub Actions. Third-party status
+# feeds are checked for "indicator":"none" so a Stripe or Supabase incident
+# shows on our page as theirs, not ours.
+
+owner: dougie84mo
+repo: luxmirror-status
+user-agent: luxmirror-status
 
 sites:
-  - name: Google
-    url: https://www.google.com
-  - name: Wikipedia
-    url: https://en.wikipedia.org
-  - name: Hacker News
-    url: https://news.ycombinator.com
-  - name: Secret Site
-    url: $SECRET_SITE
+  - name: theluxmirror.com
+    url: https://theluxmirror.com
+    expectedStatusCodes: [200]
+  - name: Help center
+    url: https://support.theluxmirror.com
+    expectedStatusCodes: [200]
+  - name: Staff console
+    url: https://admin.theluxmirror.com
+    expectedStatusCodes: [200]
+  - name: Cloud — sign-in
+    url: https://ywmeghkhswixaueptfrt.supabase.co/auth/v1/health
+    expectedStatusCodes: [200]
+  - name: Cloud — data
+    url: https://ywmeghkhswixaueptfrt.supabase.co/rest/v1/
+    headers:
+      - "apikey: $SUPABASE_ANON_KEY"
+    expectedStatusCodes: [200]
+  - name: Cloud — functions
+    url: https://ywmeghkhswixaueptfrt.supabase.co/functions/v1/status-health
+    expectedStatusCodes: [200]
+  - name: Payments provider (Stripe)
+    url: https://status.stripe.com/api/v2/status.json
+    expectedStatusCodes: [200]
+    __dangerous__body_down_if_text_missing: '"indicator":"none"'
+  - name: Cloud provider (Supabase)
+    url: https://status.supabase.com/api/v2/status.json
+    expectedStatusCodes: [200]
+    __dangerous__body_down_if_text_missing: '"indicator":"none"'
 
 status-website:
-  # Add your custom domain name, or remove the `cname` line if you don't have a domain
-  # Uncomment the `baseUrl` line if you don't have a custom domain and add your repo name there
-  cname: demo.upptime.js.org
-  # baseUrl: /your-repo-name
-  logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
-  name: Upptime
-  introTitle: "**Upptime** is the open-source uptime monitor and status page, powered entirely by GitHub."
-  introMessage: This is a sample status page which uses **real-time** data from our [GitHub repository](https://github.com/upptime/upptime). No server required — just GitHub Actions, Issues, and Pages. [**Get your own for free**](https://github.com/upptime/upptime)
+  cname: status.theluxmirror.com
+  name: LUX status
+  theme: dark
+  logoUrl: https://theluxmirror.com/icon.svg
+  introTitle: "Is it the mirror, or is it the cloud?"
+  introMessage: >-
+    Live checks on theluxmirror.com, the help center, the staff console, the
+    cloud behind the LUX Mirror and LUX Booking apps, and the providers we
+    build on. A mirror that is offline while everything here is up is a
+    power or Wi-Fi problem at the chair — the help center has the steps.
   navbar:
     - title: Status
       href: /
-    - title: GitHub
-      href: https://github.com/$OWNER/$REPO
+    - title: Help center
+      href: https://support.theluxmirror.com
+    - title: Open a ticket
+      href: https://support.theluxmirror.com/ticket
+    - title: support@theluxmirror.com
+      href: mailto:support@theluxmirror.com
 
-# Upptime also supports notifications, assigning issues, and more
-# See https://upptime.js.org/docs/configuration
+i18n:
+  activeIncidents: Active incidents
+  allSystemsOperational: All systems operational
+  incidentReport: "Incident #$NUMBER report →"
+  activeIncidentSummary: Opened at $DATE with $POSTS posts
+  incidentTitle: Incident $NUMBER details
+  incidentDetails: Incident details
+  incidentFixed: Fixed
+  incidentOngoing: Ongoing
+  incidentOpenedAt: Opened at
+  incidentClosedAt: Closed at
+  incidentSubscribe: Subscribe to updates
+  incidentViewOnGitHub: View on GitHub
+  incidentCommentSummary: Posted at $DATE by $AUTHOR
+  incidentBack: ← Back to all incidents
+  pastIncidents: Past incidents
+  pastIncidentsResolved: Resolved in $MINUTES minutes with $POSTS posts
+  liveStatus: Live status
+  overallUptime: Overall uptime
+  averageResponseTime: Average response time
+  sevenDays: 7-day
+  thirtyDays: 30-day
+  oneYear: 1-year
+  footer: Lux Mirror LLC · theluxmirror.com
+  errorTitle: Not found
+  errorMessage: That page does not exist.
+  errorBack: ← Back
+  up: Up
+  down: Down
+  degraded: Degraded
+  ms: ms
+  loading: Loading
+  navGitHub: GitHub
+  readMore: Read more
+  responseTimeWeek: Response time (week)
+  responseTimeMonth: Response time (month)
+  responseTimeYear: Response time (year)
+  responseTime: Response time
+  uptimeWeek: Uptime (week)
+  uptimeMonth: Uptime (month)
+  uptimeYear: Uptime (year)
+  uptime: Uptime
+
+commitMessages:
+  readmeContent: ":pencil: Update summary in README [skip ci] [skip upptime]"
+  summaryJson: ":card_file_box: Update status summary [skip ci] [skip upptime]"
+  statusChange: "$EMOJI $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [skip upptime]"
+  graphsUpdate: ":bento: Update graphs [skip ci] [skip upptime]"
