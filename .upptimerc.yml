@@ -4,7 +4,7 @@
 #
 # Secrets the repo needs (Settings → Secrets → Actions):
 #   GH_PAT                 a token with repo scope (Upptime commits results)
-#   SUPABASE_ANON_KEY      the publishable key, for the REST check below
+#   (no other secrets: the REST check was dropped — status-health already proves the database)
 #
 # Each check runs every 5 minutes from GitHub Actions. Third-party status
 # feeds are checked for "indicator":"none" so a Stripe or Supabase incident
@@ -26,11 +26,6 @@ sites:
     expectedStatusCodes: [200]
   - name: Cloud — sign-in
     url: https://ywmeghkhswixaueptfrt.supabase.co/auth/v1/health
-    expectedStatusCodes: [200]
-  - name: Cloud — data
-    url: https://ywmeghkhswixaueptfrt.supabase.co/rest/v1/
-    headers:
-      - "apikey: $SUPABASE_ANON_KEY"
     expectedStatusCodes: [200]
   - name: Cloud — functions
     url: https://ywmeghkhswixaueptfrt.supabase.co/functions/v1/status-health
