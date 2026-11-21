@@ -1,7 +1,7 @@
 url: https://status.stripe.com/api/v2/status.json
 status: down
 code: 404
-responseTime: 134
-lastUpdated: 2026-11-20T03:53:32.733Z
+responseTime: 178
+lastUpdated: 2026-11-21T03:49:57.415Z
 startTime: 2026-11-03T01:00:29.425Z
 generator: Upptime <https://github.com/upptime/upptime>
