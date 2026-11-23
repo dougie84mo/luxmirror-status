@@ -57,15 +57,17 @@ status-website:
     cloud behind the LUX Mirror and LUX Booking apps, and the providers we
     build on. A mirror that is offline while everything here is up is a
     power or Wi-Fi problem at the chair — the help center has the steps.
+  # Two links only: four overflowed a phone screen and the bar scrolled
+  # sideways (2026-11-22). The logo already links to this page, and the
+  # support address is on the help center.
   navbar:
-    - title: Status
-      href: /
     - title: Help center
       href: https://support.theluxmirror.com
     - title: Open a ticket
       href: https://support.theluxmirror.com/ticket
-    - title: support@theluxmirror.com
-      href: mailto:support@theluxmirror.com
+  # Phone width: drop the wordmark beside the logo, tighten the nav, and hide
+  # the response-time graph that otherwise sits behind each row's text.
+  css: "@media (max-width: 600px){ nav .logo div{display:none} nav .container{padding-left:12px;padding-right:12px} nav li a{padding-left:10px !important;padding-right:10px !important} article.graph{background-image:none !important} }"
 
 i18n:
   activeIncidents: Active incidents
@@ -85,8 +87,8 @@ i18n:
   pastIncidents: Past incidents
   pastIncidentsResolved: Resolved in $MINUTES minutes with $POSTS posts
   liveStatus: Live status
-  overallUptime: Overall uptime
-  averageResponseTime: Average response time
+  overallUptime: "Overall uptime: $UPTIME"
+  averageResponseTime: "Average response time: $TIME ms"
   sevenDays: 7-day
   thirtyDays: 30-day
   oneYear: 1-year
