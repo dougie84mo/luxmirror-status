@@ -7,8 +7,8 @@
 #   (no other secrets: the REST check was dropped — status-health already proves the database)
 #
 # Each check runs every 5 minutes from GitHub Actions. Third-party status
-# feeds are checked for "indicator":"none" so a Stripe or Supabase incident
-# shows on our page as theirs, not ours.
+# checks (Supabase's status feed for "indicator":"none", Stripe's API health
+# endpoint) make a provider incident show on our page as theirs, not ours.
 
 owner: dougie84mo
 repo: luxmirror-status
@@ -24,16 +24,23 @@ sites:
   - name: Staff console
     url: https://admin.theluxmirror.com
     expectedStatusCodes: [200]
+  # The auth gateway answers 401 without a key, which read as "down" from
+  # 2026-11-03 to 2026-11-22. This is the publishable key: public by design,
+  # the same one the website and both apps ship in their bundles.
   - name: Cloud — sign-in
     url: https://ywmeghkhswixaueptfrt.supabase.co/auth/v1/health
+    headers:
+      - "apikey: sb_publishable_MevelC-norBXnxA9GolpTg_mFFOhNMN"
     expectedStatusCodes: [200]
   - name: Cloud — functions
     url: https://ywmeghkhswixaueptfrt.supabase.co/functions/v1/status-health
     expectedStatusCodes: [200]
+  # Stripe's status site has no Statuspage feed (the old URL returned an HTML
+  # page, so the text check failed and the row read "down"). Stripe's own API
+  # health endpoint answers 200 while the API is up.
   - name: Payments provider (Stripe)
-    url: https://status.stripe.com/api/v2/status.json
+    url: https://api.stripe.com/healthcheck
     expectedStatusCodes: [200]
-    __dangerous__body_down_if_text_missing: '"indicator":"none"'
   - name: Cloud provider (Supabase)
     url: https://status.supabase.com/api/v2/status.json
     expectedStatusCodes: [200]
